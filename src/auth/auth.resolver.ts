@@ -5,16 +5,15 @@ import { User } from '../user/entities/user.entity'
 import { UseGuards } from '@nestjs/common'
 import { GqlAuthGuard } from './guard/gql.guard'
 import { CurrentUser } from './decorators/current-user'
+import { JwtReturn } from './types/jwt.return'
 
 @Resolver()
 export class AuthResolver {
   constructor(private authService: AuthService) {}
 
-  @Mutation(() => String)
-  async login(@Args('data') data: LoginInput) {
-    const jwt = await this.authService.validateUser(data)
-
-    return jwt.access_token
+  @Mutation(() => JwtReturn)
+  async login(@Args('data') data: LoginInput): Promise<JwtReturn> {
+    return await this.authService.validateUser(data)
   }
 
   @Query(() => User)
