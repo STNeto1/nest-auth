@@ -50,6 +50,18 @@ export class UserService {
     return user
   }
 
+  async findOneByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      email
+    })
+
+    if (!user) {
+      throw new NotFoundException('User was not found')
+    }
+
+    return user
+  }
+
   update(id: number, updateUserInput: UpdateUserInput) {
     return `This action updates a #${id} user`
   }
