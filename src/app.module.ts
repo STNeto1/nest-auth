@@ -5,8 +5,6 @@ import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { GraphQLModule } from '@nestjs/graphql'
 import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius'
 
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
 import { configValidationSchema } from './configuration/config'
 
 @Module({
@@ -22,7 +20,7 @@ import { configValidationSchema } from './configuration/config'
       graphiql: true
     })
   ],
-  controllers: [AppController],
-  providers: [AppService]
+  controllers: [],
+  providers: []
 })
 export class AppModule {}
