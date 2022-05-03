@@ -15,10 +15,19 @@ import { UserModule } from './user/user.module'
       validationSchema: configValidationSchema
     }),
     LoggerModule.forRoot(),
-    MikroOrmModule.forRoot(),
+    MikroOrmModule.forRoot({
+      autoLoadEntities: true,
+      dbName: 'nest1',
+      type: 'postgresql',
+      user: 'postgres',
+      password: 'postgres',
+      port: 5432,
+      debug: true
+    }),
     GraphQLModule.forRoot<MercuriusDriverConfig>({
       driver: MercuriusDriver,
-      graphiql: true
+      graphiql: true,
+      autoSchemaFile: true
     }),
     UserModule
   ],
