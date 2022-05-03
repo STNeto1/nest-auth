@@ -1,3 +1,3 @@
-import * as Joi from 'joi';
+import * as Joi from 'joi'
 
-export default Joi.object({});
+export default Joi.object({})
