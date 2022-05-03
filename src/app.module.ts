@@ -1,15 +1,18 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { LoggerModule } from 'nestjs-pino'
+
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
-import config from './configuration/config'
+import { configValidationSchema } from './configuration/config'
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      validationSchema: config
-    })
+      validationSchema: configValidationSchema
+    }),
+    LoggerModule.forRoot()
   ],
   controllers: [AppController],
   providers: [AppService]
