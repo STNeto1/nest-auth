@@ -6,6 +6,7 @@ import { GraphQLModule } from '@nestjs/graphql'
 import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius'
 
 import { configValidationSchema } from './configuration/config'
+import { UserModule } from './user/user.module'
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { configValidationSchema } from './configuration/config'
     GraphQLModule.forRoot<MercuriusDriverConfig>({
       driver: MercuriusDriver,
       graphiql: true
-    })
+    }),
+    UserModule
   ],
   controllers: [],
   providers: []

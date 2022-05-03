@@ -1,7 +1,9 @@
 import { Options } from '@mikro-orm/core'
 
+import { User } from './user/entities/user.entity'
+
 const config: Options = {
-  entities: [],
+  entities: [User],
   dbName: 'nest1',
   user: 'postgres',
   password: 'postgres',
