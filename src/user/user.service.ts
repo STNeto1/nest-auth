@@ -3,12 +3,14 @@ import {
   Injectable,
   NotFoundException
 } from '@nestjs/common'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { EntityRepository } from '@mikro-orm/core'
+import { compare, hash } from 'bcryptjs'
+
 import { CreateUserInput } from './dto/create-user.input'
 import { UpdateUserInput } from './dto/update-user.input'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import { User } from './entities/user.entity'
-import { EntityRepository } from '@mikro-orm/core'
-import { hash } from 'bcryptjs'
+import { LoginInput } from './dto/login.input'
 
 @Injectable()
 export class UserService {
@@ -58,6 +60,21 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User was not found')
     }
+
+    return user
+  }
+
+  async findByEmailAndPassword(data: LoginInput): Promise<User> {
+    const exception = new BadRequestException('Invalid credentials')
+
+    const user = await this.userRepository.findOne({
+      email: data.email
+    })
+
+    if (!user) throw exception
+
+    const validPwd = await compare(data.password, user.password)
+    if (!validPwd) throw exception
 
     return user
   }
