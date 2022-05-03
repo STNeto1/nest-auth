@@ -8,13 +8,13 @@ import { UpdateUserInput } from './dto/update-user.input'
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Mutation(() => Boolean)
+  @Mutation(() => Boolean, { name: 'createUser' })
   async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     await this.userService.create(createUserInput)
     return true
   }
 
-  @Query(() => [User], { name: 'user' })
+  @Query(() => [User], { name: 'findAllUsers' })
   findAll() {
     return this.userService.findAll()
   }

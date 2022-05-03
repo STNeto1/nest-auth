@@ -30,8 +30,8 @@ export class UserService {
     return this.userRepository.persistAndFlush(user)
   }
 
-  findAll() {
-    return `This action returns all user`
+  async findAll(): Promise<User[]> {
+    return this.userRepository.findAll()
   }
 
   findOne(id: number) {
