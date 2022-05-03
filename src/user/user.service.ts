@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common'
 import { CreateUserInput } from './dto/create-user.input'
 import { UpdateUserInput } from './dto/update-user.input'
 import { InjectRepository } from '@mikro-orm/nestjs'
@@ -34,8 +38,16 @@ export class UserService {
     return this.userRepository.findAll()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`
+  async findOne(id: number): Promise<User> {
+    const user = await this.userRepository.findOne({
+      id
+    })
+
+    if (!user) {
+      throw new NotFoundException('User was not found')
+    }
+
+    return user
   }
 
   update(id: number, updateUserInput: UpdateUserInput) {
