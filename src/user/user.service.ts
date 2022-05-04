@@ -79,11 +79,26 @@ export class UserService {
     return user
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`
+  async update(user: User, updateUserInput: UpdateUserInput): Promise<User> {
+    if (updateUserInput.name) {
+      user.name = updateUserInput.name
+    }
+
+    if (updateUserInput.email) {
+      user.email = updateUserInput.email
+    }
+
+    if (updateUserInput.password) {
+      user.password = await hash(updateUserInput.password, 10)
+    }
+
+    await this.userRepository.persistAndFlush(user)
+
+    return user
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`
+  async remove(user: User): Promise<void> {
+    this.userRepository.remove(user)
+    await this.userRepository.flush()
   }
 }
