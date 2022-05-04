@@ -8,6 +8,7 @@ import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius'
 import { configValidationSchema } from './configuration/config'
 import { UserModule } from './user/user.module'
 import { AuthModule } from './auth/auth.module'
+import { MailModule } from './mail/mail.module'
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { AuthModule } from './auth/auth.module'
       autoSchemaFile: true
     }),
     UserModule,
-    AuthModule
+    AuthModule,
+    MailModule
   ],
   controllers: [],
   providers: []
