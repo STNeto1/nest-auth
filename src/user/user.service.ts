@@ -85,7 +85,17 @@ export class UserService {
     }
 
     if (updateUserInput.email) {
-      user.email = updateUserInput.email
+      const userWithEmail = await this.userRepository.findOne({
+        email: updateUserInput.email
+      })
+
+      if (!userWithEmail) {
+        user.email = updateUserInput.email
+      }
+
+      if (!!userWithEmail && userWithEmail.id !== user.id) {
+        throw new BadRequestException('Email already in use')
+      }
     }
 
     if (updateUserInput.password) {
