@@ -6,15 +6,17 @@ import { AuthService } from './auth.service'
 import { UserModule } from '../user/user.module'
 import { JwtStrategy } from './strategy/jwt.strategy'
 import { AuthResolver } from './auth.resolver'
+import { getRsaPrivateKey } from '../utils'
 
 @Module({
   imports: [
     UserModule,
     PassportModule,
     JwtModule.register({
-      secret: 'some bad secret',
+      secret: getRsaPrivateKey(),
       signOptions: {
-        expiresIn: '1h'
+        expiresIn: '1h',
+        algorithm: 'RS256'
       }
     })
   ],

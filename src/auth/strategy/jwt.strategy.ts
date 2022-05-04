@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common'
 import { UserService } from '../../user/user.service'
 import { User } from '../../user/entities/user.entity'
 import { JwtPayload } from '../types/jwt.payload'
+import { getRsaPublicKey } from '../../utils'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -12,7 +13,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: 'some bad secret'
+      secretOrKey: getRsaPublicKey()
     })
   }
 
