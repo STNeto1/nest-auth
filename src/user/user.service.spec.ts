@@ -8,6 +8,7 @@ import { CreateUserInput } from './dto/create-user.input'
 import { BadRequestException, NotFoundException } from '@nestjs/common'
 import { hash } from 'bcryptjs'
 import { UpdateUserInput } from './dto/update-user.input'
+import { MailService } from '../mail/mail.service'
 
 describe('UserService', () => {
   let service: UserService
@@ -22,6 +23,7 @@ describe('UserService', () => {
   }
 
   const mockedUserRepository = createMock<EntityRepository<User>>()
+  const mockedMailService = createMock<MailService>()
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -30,6 +32,10 @@ describe('UserService', () => {
         {
           provide: getRepositoryToken(User),
           useValue: mockedUserRepository
+        },
+        {
+          provide: MailService,
+          useValue: mockedMailService
         }
       ]
     }).compile()
@@ -63,6 +69,7 @@ describe('UserService', () => {
       await service.create(createInput)
 
       expect(mockedUserRepository.persistAndFlush).toHaveBeenCalled()
+      expect(mockedMailService.sendRegisterEmail).toHaveBeenCalled()
     })
   })
 

@@ -11,11 +11,13 @@ import { CreateUserInput } from './dto/create-user.input'
 import { UpdateUserInput } from './dto/update-user.input'
 import { User } from './entities/user.entity'
 import { LoginInput } from './dto/login.input'
+import { MailService } from '../mail/mail.service'
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private userRepository: EntityRepository<User>
+    @InjectRepository(User) private userRepository: EntityRepository<User>,
+    private mailService: MailService
   ) {}
 
   async create(createUserInput: CreateUserInput) {
@@ -33,7 +35,9 @@ export class UserService {
       password: hashedPassword
     })
 
-    return this.userRepository.persistAndFlush(user)
+    await this.userRepository.persistAndFlush(user)
+
+    await this.mailService.sendRegisterEmail(user)
   }
 
   async findAll(): Promise<User[]> {
