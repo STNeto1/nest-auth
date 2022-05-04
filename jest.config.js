@@ -3,9 +3,9 @@ module.exports = {
   rootDir: 'src',
   testRegex: '.*\\.spec\\.ts$',
   transform: {
-    '^.+\\.(t|j)s$': process.env.JEST_TS_TRANSFORMER || '@swc/jest',
+    '^.+\\.(t|j)s$': process.env.JEST_TS_TRANSFORMER || '@swc/jest'
   },
-  collectCoverageFrom: ['**/*.(t|j)s'],
+  collectCoverageFrom: ['**/*.(resolver|service).(t|j)s'],
   coverageDirectory: '../coverage',
-  testEnvironment: 'node',
-};
+  testEnvironment: 'node'
+}
