@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { LoggerModule } from 'nestjs-pino'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { GraphQLModule } from '@nestjs/graphql'
@@ -17,14 +17,19 @@ import { MailModule } from './mail/mail.module'
       validationSchema: configValidationSchema
     }),
     LoggerModule.forRoot(),
-    MikroOrmModule.forRoot({
-      autoLoadEntities: true,
-      dbName: 'nest1',
-      type: 'postgresql',
-      user: 'postgres',
-      password: 'postgres',
-      port: 5432,
-      debug: true
+    MikroOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        autoLoadEntities: true,
+        host: configService.get('DB_HOST'),
+        dbName: configService.get('DB_NAME'),
+        type: 'postgresql',
+        user: configService.get('DB_USER'),
+        password: configService.get('DB_PASSWORD'),
+        port: configService.get('DB_PORT'),
+        debug: true,
+        allowGlobalContext: true
+      })
     }),
     GraphQLModule.forRoot<MercuriusDriverConfig>({
       driver: MercuriusDriver,
